@@ -1,0 +1,54 @@
+enclave {
+    include "sgx_eid.h"
+    include "sgx_dh.h"
+
+    untrusted {
+        size_t recv_dh_msg1_ocall([in] sgx_measurement_t *target_enclave, [out] sgx_dh_msg1_t *dh_msg1, size_t session_id);
+        size_t send_dh_msg2_recv_dh_msg3_ocall([in] sgx_dh_msg2_t *dh_msg2, [out] sgx_dh_msg3_t *dh_msg3, size_t session_id);
+        size_t send_dh_msg1_recv_dh_msg2_ocall([in] sgx_measurement_t *target_enclave, [in] sgx_dh_msg1_t *dh_msg1, [out] sgx_dh_msg2_t *dh_msg2, size_t session_id);
+        size_t send_dh_msg3_ocall([in] sgx_dh_msg3_t *dh_msg3, size_t session_id);
+
+        size_t start_session_ocall([in,string] const char *name, [in] sgx_measurement_t *target_enclave, size_t session_id, [out] size_t *is_server);
+        size_t end_session_ocall(size_t session_id);
+
+        size_t send_msg_ocall([in,  size=len] void *buf, size_t len, size_t session_id);
+        size_t recv_msg_ocall([out, size=len] void *buf, size_t len, size_t session_id);
+
+        size_t fs_init_service_ocall();
+        size_t fs_create_ocall(int64_t fd, [in,string] const char *name);
+        size_t fs_destroy_ocall(int64_t fd, [in,string] const char *name);
+        size_t fs_write_block_ocall(int64_t fd, size_t addr, [in, size=len] void *buf, size_t len);
+        size_t fs_read_block_ocall(int64_t fd, size_t addr, [out, size=len] void *buf, size_t len);
+        size_t fs_delete_block_ocall(int64_t fd, size_t addr);
+        size_t fs_save_ocall(int64_t fd, [in,string] const char *name, int64_t length);
+        size_t fs_load_ocall(int64_t fd, [in,string] const char *name, [out, size=8] int64_t *length);
+
+        //size_t create_merkle_ocall([in, count=num_hashes] sgx_sha256_hash_t *buf, size_t num_hashes, size_t num_blocks);
+        //size_t read_merkle_ocall(size_t addr, [out, count=num_hashes] sgx_sha256_hash_t *buf, size_t num_hashes);
+        //size_t write_merkle_ocall(size_t addr, [in, count=num_hashes] sgx_sha256_hash_t *buf, size_t num_hashes);
+
+        size_t kvs_init_service_ocall();
+        size_t kvs_create_ocall(int64_t fd, [in,string] const char *name);
+        size_t kvs_load_ocall(int64_t fd, [in,string] const char *name);
+        size_t kvs_set_ocall(int64_t fd, [in, size=k_len] void *k, size_t k_len, [user_check] void *buf, size_t buf_len);
+        size_t kvs_get_ocall(int64_t fd, [in, size=k_len] void *k, size_t k_len, [out, size=8] void **untrusted_buf);
+        size_t kvs_delete_ocall(int64_t fd, [in, size=k_len] void *k, size_t k_len);
+        size_t kvs_destroy_ocall(int64_t fd, [in,string] const char *name);
+        size_t kvs_close_ocall(int64_t fd);
+        size_t kvs_save_ocall(int64_t fd, [in,string] const char *name);
+
+        size_t malloc_ocall(size_t num_bytes, [out, size=8] void **untrusted_buf);
+        size_t free_ocall([user_check] void *untrusted_buf);
+
+        size_t ledger_post_ocall([in, size=buf_len] void *buf, size_t buf_len);
+        size_t ledger_get_content_ocall(uint64_t height, [out, size=8] void **untrusted_buf, [out, size=8] size_t *untrusted_buf_len);
+        size_t ledger_get_policy_ocall(uint64_t spec_id, [out, size=8] void **untrusted_buf, [out, size=8] size_t *untrusted_buf_len);
+        size_t ledger_get_compute_record_ocall(uint64_t spec_id, [out, size=8] void **untrusted_buf, [out, size=8] size_t *untrusted_buf_len);
+        size_t ledger_get_current_counter_ocall([out, size=8] uint64_t *height);
+
+        size_t print_debug_on_host_ocall([string,in] const char *str);
+
+        size_t print_time_of_day_ocall();
+        size_t sleep_ocall(uint32_t microseconds);
+    };
+};

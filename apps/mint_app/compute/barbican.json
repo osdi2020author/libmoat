@@ -1,0 +1,22 @@
+{
+  "ledger" : "/tmp/luciditee.ledger",
+  "kvs_outputs": {},
+  "kvs_inputs": {
+    "mint_input": "/tmp/s3/43/mint_input"
+  },
+  "kvs_state": {},
+  "fs_inputs": {
+    "bank_input": "/tmp/s3/43/bank_input"
+  },
+  "fs_outputs": {
+    "fin_output" : "/tmp/s3/43/fin_output"
+  },
+  "fs_state": {
+    "fin_state" : {
+      "prev": "/tmp/s3/43/fin_state", 
+      "next": "/tmp/s3/43/fin_state"
+    }
+  },
+  "scc_self": "5556",
+  "scc_actors": {}
+}
